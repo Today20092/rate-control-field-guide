@@ -1,0 +1,22 @@
+flowchart LR
+    Start([Start with the job]) --> Live{Must it fit a live<br/>or strict-rate connection?}
+    Live -->|Yes| CBR[Choose CBR]
+    Live -->|No| Size{Must the file hit a size<br/>or average bitrate?}
+    Size -->|Yes| VBR[Choose VBR]
+    Size -->|No| Quality{Want a simple,<br/>steady quality target?}
+    Quality -->|Yes| CRF[Choose CRF]
+    Quality -->|No| CQP[Choose CQP<br/>for testing or capture]
+
+    classDef start fill:#171819,stroke:#171819,stroke-width:2px,color:#f1eee6
+    classDef decision fill:#f1eee6,stroke:#77756f,stroke-width:2px,color:#171819
+    classDef cbr fill:#27c7a8,stroke:#171819,stroke-width:2px,color:#171819
+    classDef vbr fill:#7b8cff,stroke:#171819,stroke-width:2px,color:#171819
+    classDef crf fill:#ff6b45,stroke:#171819,stroke-width:2px,color:#171819
+    classDef cqp fill:#f5b73b,stroke:#171819,stroke-width:2px,color:#171819
+
+    class Start start
+    class Live,Size,Quality decision
+    class CBR cbr
+    class VBR vbr
+    class CRF crf
+    class CQP cqp
