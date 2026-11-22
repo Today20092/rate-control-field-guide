@@ -8,11 +8,11 @@ import PixelBlock from './PixelBlock'
 
 function Levels({ levels }: { levels: Block }) {
   return (
-    <div className="grid aspect-square w-full grid-cols-8 rounded-md border border-line font-mono text-[clamp(0.55rem,2.2vw,0.8rem)]">
+    <div className="grid aspect-square w-full grid-cols-8 rounded-md border border-line font-mono text-xs">
       {levels.flat().map((l, i) => (
         <span
           key={i}
-          className={`flex items-center justify-center border-[0.5px] border-line transition-colors duration-300 ${l === 0 ? 'text-line' : 'bg-motion-wash font-bold text-motion-ink'}`}
+          className={`flex items-center justify-center border-[0.5px] border-line transition-colors duration-300 ${l === 0 ? 'text-ink-faint' : 'bg-motion-wash font-bold text-motion-ink'}`}
         >
           {l}
         </span>
@@ -53,13 +53,13 @@ export default function BlockLab() {
         onValueChange={setQuality}
       />
 
-      <div className="mt-4 grid grid-cols-2 gap-4 sm:gap-6">
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 sm:gap-6">
         <div>
           <p className="label mb-2 text-ink-soft">What you see</p>
           <CompareSlider
             label="Compare the original patch with the rebuilt patch"
             beforeLabel="Original"
-            afterLabel="After"
+            afterLabel="Compressed"
             before={<PixelBlock block={block} />}
             after={<PixelBlock block={result.rebuilt} />}
           />
@@ -71,8 +71,7 @@ export default function BlockLab() {
       </div>
 
       <p className="mt-5 font-display text-lg font-semibold" aria-live="polite">
-        The file keeps {result.kept} of 64 numbers. The other {64 - result.kept} are zero, and zeros cost
-        almost nothing.
+        {result.kept} of 64 values are nonzero. The encoder can store runs of zeros in fewer bits.
       </p>
     </div>
   )

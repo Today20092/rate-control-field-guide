@@ -49,20 +49,20 @@ const qpImages = await Promise.all(
 )
 
 const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
-  { chapter: 'one-picture', text: 'How one picture gets 20 times smaller.' },
-  { chapter: 'keys', text: 'How I, P and B frames store pictures and changes.' },
+  { chapter: 'one-picture', text: 'How JPEG shrinks a picture.' },
+  { chapter: 'keys', text: 'What I, P and B frames store.' },
   {
     chapter: 'editing',
-    text: 'Why H.264 saves space and ProRes edits smoothly.',
+    text: 'Why ProRes is easier to edit.',
   },
-  { chapter: 'bitrate', text: 'What bitrate is, and why 4K can look worse than 1080p.' },
-  { chapter: 'rate-control', text: 'Which rate-control setting to use: CRF, VBR or CBR.' },
+  { chapter: 'bitrate', text: 'Why 4K can look worse than 1080p.' },
+  { chapter: 'rate-control', text: 'Which rate control setting to use.' },
 ]
 ---
 
 <Base
   title="How Video Compression Works"
-  description="A hands-on guide for beginners and videographers: how JPEG, H.264, H.265, ProRes and DNxHR store video, what I, P and B frames are, and what bitrate and rate control do."
+  description="An interactive guide to image and video compression, frame types, editing codecs, bitrate and export settings."
 >
   <PegStrip size="page" />
   <div class="shell">
@@ -72,12 +72,12 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
         <div class="hero-copy">
           <h1>How video compression works</h1>
           <p class="thesis">
-            A video file keeps a few full pictures and only the <strong>changes</strong> between them. That
-            one idea explains file size, bitrate, and why some files are slow to edit.
+            Most video files store a few complete pictures and use them to predict the frames in between. That
+            saves space and can add work during editing.
           </p>
           <p class="start">
             <a class="ctl start-link" href="#frame-stack">
-              See what video stores
+              Try the frame stack
             </a>
           </p>
           <h2 class="goals-title">What you will learn</h2>
@@ -108,13 +108,13 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
       <Chapter id="one-picture">
         <Prose>
           <p>
-            A 1080p picture has about 2 million pixels. Each pixel needs 3 numbers for its colour, so the raw
-            picture is about 6 MB. A JPEG of the same picture is often 300 KB. That is 20 times smaller.
+            A 1080p picture has about 2 million pixels. With one byte each for red, green and blue, the raw
+            picture takes about 6 MB. A 300 KB JPEG of that picture takes about one twentieth as much space.
           </p>
           <p>
             JPEG cuts the picture into squares of 8×8 pixels. It describes each square as a mix of simple
-            patterns: a flat tone, a soft fade, fine stripes. Then it rounds the small values to zero. Zeros
-            cost almost nothing to store, so this <strong>rounding</strong> saves the most space.
+            patterns: a flat tone, a soft fade, fine stripes. It rounds the numbers that describe those
+            patterns. Small values often become zero, which makes the block cheaper to store.
           </p>
         </Prose>
         <Figure
@@ -125,13 +125,12 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
         </Figure>
         <Prose>
           <p>
-            Video encoders round in the same way. They call the rounding strength the{' '}
-            <strong>quantizer</strong> (QP). Below is one frame from a real H.264 encode. Swipe across it to
-            compare fine and coarse rounding.
+            Video encoders also round these values. The <strong>quantization parameter</strong> (QP) controls
+            how coarsely they round. Drag the divider to compare two encodes of the same frame.
           </p>
         </Prose>
         <Figure
-          takeaway="A higher QP rounds harder. The file gets smaller and the picture loses detail."
+          takeaway="A higher QP rounds harder. The encoder usually uses fewer bits and loses more detail."
           note="Real H.264 encodes of one frame."
         >
           <QualityLens client:visible images={qpImages} />
@@ -164,8 +163,8 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
       <Chapter id="keys">
         <Prose>
           <p>
-            H.264 and H.265 fix this. They save a full picture only now and then. For the frames between, they
-            save only the changes. There are three types of frame:
+            H.264 and H.265 can save space by predicting parts of a frame from other frames. I, P and B
+            describe which references a frame can use.
           </p>
           <ul class="frame-types">
             <li>
@@ -182,8 +181,8 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
                 P
               </b>
               <span>
-                <strong>P-frame (predicted).</strong> Copies an earlier frame, moves some blocks and fixes a
-                few pixels. Much smaller.
+                <strong>P-frame (predicted).</strong> Can predict blocks from earlier frames and store
+                corrections.
               </span>
             </li>
             <li>
@@ -191,15 +190,14 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
                 B
               </b>
               <span>
-                <strong>B-frame (both directions).</strong> Borrows from an earlier frame and a later frame.
-                The smallest.
+                <strong>B-frame (both directions).</strong> Can also predict blocks from a later frame.
               </span>
             </li>
           </ul>
-          <p class="frame-types-interactive">Pick a frame type and watch the encoder build it.</p>
+          <p class="frame-types-interactive">Pick a frame type, then play the demo or step through it.</p>
         </Prose>
         <Figure
-          takeaway="Only the I-frame stores a picture. P and B frames store blue arrows and a small fix."
+          takeaway="In this example, the P and B frames use motion arrows and corrections to save space."
           note="Sizes are illustrative."
         >
           <div class="frame-types-interactive">
@@ -216,16 +214,16 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
         <Prose>
           <p>
             The arrow is a <strong>motion vector</strong>. It tells the player where a block of pixels came
-            from. The fix is the <strong>residual</strong>: the part the arrow got wrong, rounded like a JPEG.
+            from. The difference between the prediction and the actual block is the <strong>residual</strong>.
+            The encoder compresses it too.
           </p>
           <p>
-            Those were drawings. Here is a real clip: 10 seconds of a podcast, saved as H.264. Each bar is one
-            frame, drawn to scale. Drag through it, then switch to what the file stores: a full picture, then
-            arrows, arrows, arrows, then a full picture again.
+            Each bar shows how much space one frame takes in this H.264 podcast clip. Scrub through the clip
+            or switch views to see which frames rely on other pictures.
           </p>
         </Prose>
         <Figure
-          takeaway={`In a real file, a key frame is about ${iVsB} times bigger than a B-frame.`}
+          takeaway={`In this clip, the average I-frame is about ${iVsB} times the size of the average B-frame.`}
           note="Measured from this clip: 1280×720 H.264, CRF 23, x264 preset slow."
         >
           <FrameSizes
@@ -237,12 +235,12 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
         </Figure>
         <Prose>
           <p>
-            So what is inside a P-frame or a B-frame? Only changes, no picture of its own. To prove it, we
-            deleted the first key frame from this clip and played it anyway.
+            What happens when the player loses a reference? We removed the first key frame and played the clip
+            again.
           </p>
         </Prose>
         <Figure
-          takeaway="Without the key frame, only the parts that move get painted. The full picture returns at the next key frame."
+          takeaway="In this clip, parts of the picture are missing until the next key frame."
           note="Real decode of the same clip with its first key frame removed."
         >
           <video
@@ -260,8 +258,8 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
         </Figure>
         <Prose>
           <p>
-            The frames from one I-frame to the next are a <strong>group of pictures</strong> (GOP). Build one
-            below. Fewer I-frames make the file smaller. But before the player can show a frame, it must
+            A sequence that starts at a key frame is called a <strong>group of pictures</strong> (GOP). Build
+            one below. Fewer I-frames make the file smaller. But before the player can show a frame, it must
             decode every frame that frame borrows from.
           </p>
         </Prose>
@@ -271,18 +269,17 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
         >
           <GopTimeline client:visible />
         </Figure>
-        <KeyIdea>Most of a compressed video is not pictures. It is arrows and small fixes.</KeyIdea>
+        <KeyIdea>Motion and corrections often take less space than storing each picture on its own.</KeyIdea>
       </Chapter>
 
       <Chapter id="editing">
         <Prose>
           <p>
-            H.264 (from 2003) and H.265 (from 2013) both work this way. H.265 is the newer version. It uses
-            bigger, flexible blocks and finds more savings, so its files are often 25 to 50% smaller at the
-            same quality. It also needs more computer power. Both codecs put every block through four steps:
+            H.264 and H.265 both use prediction. H.265 can use larger blocks and often needs fewer bits for
+            similar quality. The diagram shows the main steps for encoding a block.
           </p>
         </Prose>
-        <Figure takeaway="Every block goes through the same four steps.">
+        <Figure takeaway="The encoder predicts the block, compresses the difference and writes the result.">
           <EncoderPipeline />
         </Figure>
         <Prose>
@@ -292,10 +289,8 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
             frame. Playback stutters, most of all in reverse.
           </p>
           <p>
-            Editing codecs such as Apple <strong>ProRes</strong> and Avid <strong>DNxHR</strong> do the
-            opposite. Every frame is an I-frame. The computer decodes one frame to show one frame, so playback
-            is smooth. The cost is size: the files are about 6 to 9 times larger than a typical camera H.264
-            file.
+            Editing codecs such as Apple <strong>ProRes</strong> and Avid <strong>DNxHR</strong> compress each
+            frame on its own. That makes it easier to jump between frames. The files usually take more space.
           </p>
         </Prose>
         <Figure
@@ -311,8 +306,8 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
           </p>
         </Prose>
         <KeyIdea>
-          Long-GOP files are small but hard to decode. Every-frame-whole files are big but easy to decode.
-          Choose by the job: storing and delivering, or editing.
+          Long-GOP files save space by sharing data across frames. Editing codecs make it easier to jump to
+          any frame on the timeline.
         </KeyIdea>
       </Chapter>
 
@@ -320,17 +315,18 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
         <Prose>
           <p>
             <strong>Bitrate</strong> is the amount of data the video uses each second, in megabits per second
-            (Mbps). Bitrate multiplied by length gives the file size. For example, 8 Mbps for one minute is 60
-            MB.
+            (Mbps). Multiply the average bitrate by the duration to estimate the video size. One minute at 8
+            Mbps takes about 60 MB for video alone.
           </p>
           <p>
             Resolution is the number of pixels in each frame. All the pixels share the same bitrate. If you
-            raise the resolution and keep the bitrate, each pixel gets fewer bits. That is why a 4K video at a
-            low bitrate can look worse than a 1080p video at the same bitrate.
+            raise the resolution at the same bitrate and frame rate, there are fewer bits per pixel on
+            average. That is why a 4K video at a low bitrate can look worse than a 1080p video at the same
+            bitrate.
           </p>
         </Prose>
         <Figure
-          takeaway="At the same bitrate, 4K gets a quarter of the bits per pixel that 1080p gets."
+          takeaway="At the same bitrate and frame rate, 4K has a quarter as many bits per pixel as 1080p."
           note="Bits-per-pixel maths is exact. The quality bands are rough guides."
         >
           <BitrateLab client:visible />
@@ -342,7 +338,7 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
 
       <Chapter id="tradeoffs">
         <Prose>
-          <p>Every encode balances four things. When you improve one, another gets worse.</p>
+          <p>An encoder balances four things.</p>
           <ul>
             <li>
               <strong>File size.</strong> How much storage or bandwidth the video uses.
@@ -366,27 +362,19 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
         >
           <TradeoffLab client:visible />
         </Figure>
-        <KeyIdea>
-          Size, quality and speed are connected. Choose the two that matter most. The third one pays.
-        </KeyIdea>
+        <KeyIdea>A slower preset can spend more encoding time to save space at similar quality.</KeyIdea>
       </Chapter>
 
       <Chapter id="rate-control">
         <Prose>
           <p>
             Some scenes are easy to compress, like a talking head. Some are hard, like confetti in a moving
-            crowd. Rate control decides what changes when a scene gets harder: the file size, the bitrate or
-            the quality. You fix one, and the encoder adjusts the others.
+            crowd. Rate control tells the encoder what to aim for as scenes change. You can set a quality
+            target, a rounding strength or a bitrate target.
           </p>
         </Prose>
-        <Figure
-          takeaway="Each mode keeps one promise and lets something else move."
-          note="Curves are illustrative."
-        >
-          <RateControl client:visible />
-        </Figure>
         <Prose>
-          <h3>Start with your limit</h3>
+          <h3>Choose by what you need</h3>
           <ul>
             <li>
               <strong>Live stream, or a connection with a fixed speed?</strong> Use CBR.
@@ -399,21 +387,26 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
               <strong>A file to watch, upload or keep?</strong> Use CRF.
             </li>
             <li>
-              <strong>A test that needs the same rounding on every frame?</strong> Use CQP.
+              <strong>A test that needs a fixed quantizer setting?</strong> Use CQP.
             </li>
           </ul>
+        </Prose>
+        <Figure
+          takeaway="Bitrate can vary across scenes unless you ask the encoder to keep it steady."
+          note="Curves are illustrative."
+        >
+          <RateControl client:visible />
+        </Figure>
+        <Prose>
           <p>
-            CRF numbers work only inside one encoder. The H.264 default is 23 and the H.265 default is 28, and
-            they look about the same. Test a short clip before you choose a value.
+            CRF scales depend on the encoder. The defaults are 23 for x264 and 28 for x265. Test a short clip
+            before you choose a value.
           </p>
         </Prose>
         <KeyIdea>Bitrate is the budget. Rate control decides how to spend it, scene by scene.</KeyIdea>
       </Chapter>
 
       <footer class="footer">
-        <p>
-          Made for learning. It does not replace your encoder's documentation. Simplified models have labels.
-        </p>
         <a href="https://www.youtube.com/channel/UCVAZXZ90b8aw3i1MQngo_WQ/" rel="noreferrer">
           More video guides on YouTube
         </a>
@@ -492,6 +485,7 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
     display: flex;
     gap: 0.9rem;
     align-items: baseline;
+    min-height: 2.75rem;
     padding: 0.55rem 0;
     border-bottom: 1px solid var(--color-line);
     color: var(--color-ink);
@@ -569,11 +563,6 @@ const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
     margin-top: 6rem;
     padding-top: 2rem;
     border-top: 1px solid var(--color-line);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem 2rem;
-    justify-content: space-between;
-    color: var(--color-ink-soft);
     font-size: var(--text-base);
   }
   .footer a {
