@@ -1,0 +1,583 @@
+---
+import { getImage } from 'astro:assets'
+import { chapters } from '../content/chapters'
+import type { ImageMetadata } from 'astro'
+import Base from '../layouts/Base.astro'
+import PegStrip from '../components/PegStrip.astro'
+import ChapterRail from '../components/ChapterRail.astro'
+import Chapter from '../components/Chapter.astro'
+import Prose from '../components/Prose.astro'
+import Figure from '../components/Figure.astro'
+import KeyIdea from '../components/KeyIdea.astro'
+import ExposureSheet from '../components/ExposureSheet.astro'
+import EncoderPipeline from '../components/EncoderPipeline.astro'
+import FrameStack3D from '../components/widgets/FrameStack3D'
+import BlockLab from '../components/widgets/BlockLab'
+import QualityLens from '../components/widgets/QualityLens'
+import FrameDiff from '../components/widgets/FrameDiff'
+import GopTimeline from '../components/widgets/GopTimeline'
+import FrameTypes from '../components/widgets/FrameTypes'
+import ScrubTest from '../components/widgets/ScrubTest'
+import BitrateLab from '../components/widgets/BitrateLab'
+import TradeoffLab from '../components/widgets/TradeoffLab'
+import RateControl from '../components/widgets/RateControl'
+import FrameSizes from '../components/widgets/FrameSizes'
+import podcastClip from '../content/podcastFrames.json'
+import { summarize } from '../lib/frames'
+import { FRAME_BITS } from '../lib/gop'
+import qp18 from '../assets/quantization/qp-18.png'
+import qp28 from '../assets/quantization/qp-28.png'
+import qp38 from '../assets/quantization/qp-38.png'
+import qp48 from '../assets/quantization/qp-48.png'
+
+const video = (name: string) => `${import.meta.env.BASE_URL}/video/${name}`
+const { byType } = summarize(podcastClip)
+const iVsB = Math.round(byType.I.avg / byType.B.avg)
+
+const qpNotes: [ImageMetadata, number, string][] = [
+  [qp18, 18, 'fine rounding. Skin, letters and texture stay sharp. The most bits.'],
+  [qp28, 28, 'medium rounding. Fine texture gets soft. Far fewer bits.'],
+  [qp38, 38, 'coarse rounding. Edges break into blocks.'],
+  [qp48, 48, 'very coarse rounding. Faces smear and blocks are easy to see. The fewest bits.'],
+]
+const qpImages = await Promise.all(
+  qpNotes.map(async ([src, qp, note]) => ({
+    qp,
+    note,
+    src: (await getImage({ src, format: 'webp', quality: 92 })).src,
+  })),
+)
+
+const goals: { chapter: (typeof chapters)[number]['id']; text: string }[] = [
+  { chapter: 'one-picture', text: 'How one picture gets 20 times smaller.' },
+  { chapter: 'keys', text: 'How I, P and B frames store pictures and changes.' },
+  {
+    chapter: 'editing',
+    text: 'Why H.264 saves space and ProRes edits smoothly.',
+  },
+  { chapter: 'bitrate', text: 'What bitrate is, and why 4K can look worse than 1080p.' },
+  { chapter: 'rate-control', text: 'Which rate-control setting to use: CRF, VBR or CBR.' },
+]
+---
+
+<Base
+  title="How Video Compression Works"
+  description="A hands-on guide for beginners and videographers: how JPEG, H.264, H.265, ProRes and DNxHR store video, what I, P and B frames are, and what bitrate and rate control do."
+>
+  <PegStrip size="page" />
+  <div class="shell">
+    <ChapterRail />
+    <main id="main" tabindex="-1">
+      <header class="hero">
+        <div class="hero-copy">
+          <h1>How video compression works</h1>
+          <p class="thesis">
+            A video file keeps a few full pictures and only the <strong>changes</strong> between them. That
+            one idea explains file size, bitrate, and why some files are slow to edit.
+          </p>
+          <p class="start">
+            <a class="ctl start-link" href="#frame-stack">
+              See what video stores
+            </a>
+          </p>
+          <h2 class="goals-title">What you will learn</h2>
+          <ol class="goals">
+            {goals.map((g, i) => (
+              <li>
+                <a href={`#${g.chapter}`}>
+                  <span class="label goal-n" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span>{g.text}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <ExposureSheet />
+        <div class="hero-figure" id="frame-stack" tabindex="-1">
+          <Figure
+            takeaway="Only the red key frames are full pictures. The frames between them store arrows and small fixes."
+            note="Sizes are illustrative."
+          >
+            <FrameStack3D client:visible />
+          </Figure>
+        </div>
+      </header>
+
+      <Chapter id="one-picture">
+        <Prose>
+          <p>
+            A 1080p picture has about 2 million pixels. Each pixel needs 3 numbers for its colour, so the raw
+            picture is about 6 MB. A JPEG of the same picture is often 300 KB. That is 20 times smaller.
+          </p>
+          <p>
+            JPEG cuts the picture into squares of 8×8 pixels. It describes each square as a mix of simple
+            patterns: a flat tone, a soft fade, fine stripes. Then it rounds the small values to zero. Zeros
+            cost almost nothing to store, so this <strong>rounding</strong> saves the most space.
+          </p>
+        </Prose>
+        <Figure
+          takeaway="Smooth areas survive heavy rounding. Edges and texture are lost first."
+          note="Real JPEG maths on one 8×8 block."
+        >
+          <BlockLab client:visible />
+        </Figure>
+        <Prose>
+          <p>
+            Video encoders round in the same way. They call the rounding strength the{' '}
+            <strong>quantizer</strong> (QP). Below is one frame from a real H.264 encode. Swipe across it to
+            compare fine and coarse rounding.
+          </p>
+        </Prose>
+        <Figure
+          takeaway="A higher QP rounds harder. The file gets smaller and the picture loses detail."
+          note="Real H.264 encodes of one frame."
+        >
+          <QualityLens client:visible images={qpImages} />
+        </Figure>
+        <KeyIdea>
+          Compression keeps the shape of a picture. It throws away detail you probably will not miss.
+        </KeyIdea>
+      </Chapter>
+
+      <Chapter id="every-frame">
+        <Prose>
+          <p>
+            Video is a flip book of 24, 30 or 60 pictures every second. The simple way to compress it is to
+            compress each frame on its own, like a JPEG. This is <strong>intra-frame</strong> coding: each
+            frame uses only its own pixels.
+          </p>
+          <p>
+            But two frames next to each other are almost the same picture. Move the ball, then swipe to see
+            how little changed.
+          </p>
+        </Prose>
+        <Figure takeaway="Between two frames, almost every block is a repeat.">
+          <FrameDiff client:visible />
+        </Figure>
+        <KeyIdea>
+          If you save every frame as a full picture, you save the same background again and again.
+        </KeyIdea>
+      </Chapter>
+
+      <Chapter id="keys">
+        <Prose>
+          <p>
+            H.264 and H.265 fix this. They save a full picture only now and then. For the frames between, they
+            save only the changes. There are three types of frame:
+          </p>
+          <ul class="frame-types">
+            <li>
+              <b class="frame-tag frame-tag-I" aria-hidden="true">
+                I
+              </b>
+              <span>
+                <strong>I-frame (key frame).</strong> A full picture, compressed like a JPEG. Large, but it
+                needs no other frame.
+              </span>
+            </li>
+            <li>
+              <b class="frame-tag frame-tag-P" aria-hidden="true">
+                P
+              </b>
+              <span>
+                <strong>P-frame (predicted).</strong> Copies an earlier frame, moves some blocks and fixes a
+                few pixels. Much smaller.
+              </span>
+            </li>
+            <li>
+              <b class="frame-tag frame-tag-B" aria-hidden="true">
+                B
+              </b>
+              <span>
+                <strong>B-frame (both directions).</strong> Borrows from an earlier frame and a later frame.
+                The smallest.
+              </span>
+            </li>
+          </ul>
+          <p class="frame-types-interactive">Pick a frame type and watch the encoder build it.</p>
+        </Prose>
+        <Figure
+          takeaway="Only the I-frame stores a picture. P and B frames store blue arrows and a small fix."
+          note="Sizes are illustrative."
+        >
+          <div class="frame-types-interactive">
+            <FrameTypes client:visible />
+          </div>
+          <noscript>
+            <p>
+              In this example, the I-frame uses {FRAME_BITS.I}% of the bits of a full picture, the P-frame
+              uses
+              {FRAME_BITS.P}%, and the B-frame uses {FRAME_BITS.B}%.
+            </p>
+          </noscript>
+        </Figure>
+        <Prose>
+          <p>
+            The arrow is a <strong>motion vector</strong>. It tells the player where a block of pixels came
+            from. The fix is the <strong>residual</strong>: the part the arrow got wrong, rounded like a JPEG.
+          </p>
+          <p>
+            Those were drawings. Here is a real clip: 10 seconds of a podcast, saved as H.264. Each bar is one
+            frame, drawn to scale. Drag through it, then switch to what the file stores: a full picture, then
+            arrows, arrows, arrows, then a full picture again.
+          </p>
+        </Prose>
+        <Figure
+          takeaway={`In a real file, a key frame is about ${iVsB} times bigger than a B-frame.`}
+          note="Measured from this clip: 1280×720 H.264, CRF 23, x264 preset slow."
+        >
+          <FrameSizes
+            client:visible
+            src={video('podcast.mp4')}
+            stored={video('podcast-stored.mp4')}
+            poster={video('podcast.jpg')}
+          />
+        </Figure>
+        <Prose>
+          <p>
+            So what is inside a P-frame or a B-frame? Only changes, no picture of its own. To prove it, we
+            deleted the first key frame from this clip and played it anyway.
+          </p>
+        </Prose>
+        <Figure
+          takeaway="Without the key frame, only the parts that move get painted. The full picture returns at the next key frame."
+          note="Real decode of the same clip with its first key frame removed."
+        >
+          <video
+            class="block h-auto w-full rounded-md bg-ink"
+            src={video('no-key-frame.mp4')}
+            poster={video('no-key-frame.jpg')}
+            width="1280"
+            height="720"
+            controls
+            muted
+            playsinline
+            preload="none"
+            aria-label="The podcast clip plays normally, then again with its key frame deleted: the screen is grey except for moving hands, heads and TV screens, until the next key frame restores the whole picture."
+          ></video>
+        </Figure>
+        <Prose>
+          <p>
+            The frames from one I-frame to the next are a <strong>group of pictures</strong> (GOP). Build one
+            below. Fewer I-frames make the file smaller. But before the player can show a frame, it must
+            decode every frame that frame borrows from.
+          </p>
+        </Prose>
+        <Figure
+          takeaway="Fewer key frames and more B-frames make the file smaller. Jumping to a frame gets slower."
+          note="Frame sizes are illustrative."
+        >
+          <GopTimeline client:visible />
+        </Figure>
+        <KeyIdea>Most of a compressed video is not pictures. It is arrows and small fixes.</KeyIdea>
+      </Chapter>
+
+      <Chapter id="editing">
+        <Prose>
+          <p>
+            H.264 (from 2003) and H.265 (from 2013) both work this way. H.265 is the newer version. It uses
+            bigger, flexible blocks and finds more savings, so its files are often 25 to 50% smaller at the
+            same quality. It also needs more computer power. Both codecs put every block through four steps:
+          </p>
+        </Prose>
+        <Figure takeaway="Every block goes through the same four steps.">
+          <EncoderPipeline />
+        </Figure>
+        <Prose>
+          <p>
+            This makes H.264 and H.265 good for delivery: camera files, uploads and streaming. But they are
+            hard to edit. When you scrub the timeline, the computer must decode a chain of frames to show one
+            frame. Playback stutters, most of all in reverse.
+          </p>
+          <p>
+            Editing codecs such as Apple <strong>ProRes</strong> and Avid <strong>DNxHR</strong> do the
+            opposite. Every frame is an I-frame. The computer decodes one frame to show one frame, so playback
+            is smooth. The cost is size: the files are about 6 to 9 times larger than a typical camera H.264
+            file.
+          </p>
+        </Prose>
+        <Figure
+          takeaway="H.264 saves storage. ProRes and DNxHR save decoding work."
+          note="Storage is approximate: ProRes from Apple's published rates, DNxHR from Avid's."
+        >
+          <ScrubTest client:visible />
+        </Figure>
+        <Prose>
+          <p>
+            Many editors use both. They record H.264 or H.265 to save card space. They make ProRes Proxy
+            copies to edit smoothly. Then they export the finished video as H.264 or H.265 again.
+          </p>
+        </Prose>
+        <KeyIdea>
+          Long-GOP files are small but hard to decode. Every-frame-whole files are big but easy to decode.
+          Choose by the job: storing and delivering, or editing.
+        </KeyIdea>
+      </Chapter>
+
+      <Chapter id="bitrate">
+        <Prose>
+          <p>
+            <strong>Bitrate</strong> is the amount of data the video uses each second, in megabits per second
+            (Mbps). Bitrate multiplied by length gives the file size. For example, 8 Mbps for one minute is 60
+            MB.
+          </p>
+          <p>
+            Resolution is the number of pixels in each frame. All the pixels share the same bitrate. If you
+            raise the resolution and keep the bitrate, each pixel gets fewer bits. That is why a 4K video at a
+            low bitrate can look worse than a 1080p video at the same bitrate.
+          </p>
+        </Prose>
+        <Figure
+          takeaway="At the same bitrate, 4K gets a quarter of the bits per pixel that 1080p gets."
+          note="Bits-per-pixel maths is exact. The quality bands are rough guides."
+        >
+          <BitrateLab client:visible />
+        </Figure>
+        <KeyIdea>
+          Resolution is how many pixels you have. Bitrate is how much detail you can give them.
+        </KeyIdea>
+      </Chapter>
+
+      <Chapter id="tradeoffs">
+        <Prose>
+          <p>Every encode balances four things. When you improve one, another gets worse.</p>
+          <ul>
+            <li>
+              <strong>File size.</strong> How much storage or bandwidth the video uses.
+            </li>
+            <li>
+              <strong>Quality.</strong> How close the video looks to the original.
+            </li>
+            <li>
+              <strong>Encode speed.</strong> How long your computer takes to make the file. Slower presets
+              test more block shapes and arrows, so they find a smaller file at the same quality.
+            </li>
+            <li>
+              <strong>Decode speed.</strong> How much work the player does. H.265 needs more work than H.264.
+              ProRes needs the least.
+            </li>
+          </ul>
+        </Prose>
+        <Figure
+          takeaway="A slower preset gives a smaller file at the same quality. H.265 does too, but it takes more work to encode and play."
+          note="A teaching model, not a benchmark."
+        >
+          <TradeoffLab client:visible />
+        </Figure>
+        <KeyIdea>
+          Size, quality and speed are connected. Choose the two that matter most. The third one pays.
+        </KeyIdea>
+      </Chapter>
+
+      <Chapter id="rate-control">
+        <Prose>
+          <p>
+            Some scenes are easy to compress, like a talking head. Some are hard, like confetti in a moving
+            crowd. Rate control decides what changes when a scene gets harder: the file size, the bitrate or
+            the quality. You fix one, and the encoder adjusts the others.
+          </p>
+        </Prose>
+        <Figure
+          takeaway="Each mode keeps one promise and lets something else move."
+          note="Curves are illustrative."
+        >
+          <RateControl client:visible />
+        </Figure>
+        <Prose>
+          <h3>Start with your limit</h3>
+          <ul>
+            <li>
+              <strong>Live stream, or a connection with a fixed speed?</strong> Use CBR.
+            </li>
+            <li>
+              <strong>Must hit a file size or an average bitrate?</strong> Use VBR. Use two-pass if you have
+              time.
+            </li>
+            <li>
+              <strong>A file to watch, upload or keep?</strong> Use CRF.
+            </li>
+            <li>
+              <strong>A test that needs the same rounding on every frame?</strong> Use CQP.
+            </li>
+          </ul>
+          <p>
+            CRF numbers work only inside one encoder. The H.264 default is 23 and the H.265 default is 28, and
+            they look about the same. Test a short clip before you choose a value.
+          </p>
+        </Prose>
+        <KeyIdea>Bitrate is the budget. Rate control decides how to spend it, scene by scene.</KeyIdea>
+      </Chapter>
+
+      <footer class="footer">
+        <p>
+          Made for learning. It does not replace your encoder's documentation. Simplified models have labels.
+        </p>
+        <a href="https://www.youtube.com/channel/UCVAZXZ90b8aw3i1MQngo_WQ/" rel="noreferrer">
+          More video guides on YouTube
+        </a>
+      </footer>
+    </main>
+  </div>
+</Base>
+
+<style>
+  .shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  @media (min-width: 70rem) {
+    .shell {
+      grid-template-columns: 13rem minmax(0, 1fr);
+    }
+  }
+  main {
+    width: 100%;
+    max-width: 66rem;
+    padding: 0 clamp(1rem, 4vw, 3.5rem) 4rem;
+    outline: none;
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    padding-top: clamp(2rem, 6vw, 4rem);
+  }
+  @media (min-width: 60rem) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr) 15rem;
+      column-gap: 3rem;
+    }
+    .hero-figure {
+      grid-column: 1 / -1;
+    }
+  }
+  h1 {
+    font-size: clamp(2.6rem, 8vw, 5.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    max-width: 13ch;
+  }
+  @media (scripting: none) {
+    .frame-types-interactive {
+      display: none;
+    }
+  }
+  .thesis {
+    margin-top: 1.1rem;
+    max-width: 36rem;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--color-ink-soft);
+  }
+  .thesis strong {
+    color: var(--color-ink);
+  }
+  .goals-title {
+    margin-top: 1.75rem;
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .goals {
+    list-style: none;
+    margin-top: 0.5rem;
+    padding: 0;
+    max-width: 38rem;
+    border-top: 1.5px solid var(--color-ink);
+  }
+  .goals a {
+    display: flex;
+    gap: 0.9rem;
+    align-items: baseline;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-ink);
+    text-decoration: none;
+    line-height: 1.4;
+    transition: background 160ms var(--ease-out-expo);
+  }
+  .goals a:hover {
+    background: var(--color-sheet);
+  }
+  .goals a:hover span:last-child {
+    text-decoration: underline;
+  }
+  .goal-n {
+    flex: none;
+    color: var(--color-motion-ink);
+  }
+  .start {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+  }
+  .start-link {
+    background: var(--color-ink);
+    color: var(--color-paper);
+    text-decoration: none;
+  }
+  .start-link:hover {
+    background: var(--color-ink-soft);
+  }
+  /* On phones the stack comes before the exposure sheet; the sheet repeats it as a table. */
+  @media (max-width: 59.99rem) {
+    .hero :global(.sheet) {
+      order: 1;
+    }
+  }
+  .hero-figure :global(figure) {
+    margin-top: 0;
+  }
+  .hero-figure {
+    scroll-margin-top: 5rem;
+  }
+
+  .frame-types {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .frame-types li {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .frame-types .frame-tag {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  :global(.prose-sheet) h3 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-top: 2.5rem;
+  }
+  :global(.prose-sheet) ul:not(.frame-types) {
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  :global(.prose-sheet) li + li {
+    margin-top: 0.5rem;
+  }
+
+  .footer {
+    margin-top: 6rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    justify-content: space-between;
+    color: var(--color-ink-soft);
+    font-size: var(--text-base);
+  }
+  .footer a {
+    color: var(--color-motion-ink);
+    text-decoration: underline;
+  }
+</style>

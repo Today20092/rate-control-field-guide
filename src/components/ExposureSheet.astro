@@ -1,0 +1,85 @@
+---
+/** The hero's margin: an exposure sheet where each bar's length is the frame's stored size. */
+import { buildGop } from '../lib/gop'
+
+const frames = buildGop(9, 6, 2) // same keyframe rhythm as the hero stack
+---
+
+<aside class="sheet" aria-labelledby="xsheet-title">
+  <h2 id="xsheet-title">Exposure sheet</h2>
+  <table>
+    <caption class="sr-only">Nine frames and their relative stored size; an I-frame is 100.</caption>
+    <thead>
+      <tr>
+        <th scope="col">Frame</th>
+        <th scope="col">Type</th>
+        <th scope="col">Size</th>
+      </tr>
+    </thead>
+    <tbody>
+      {frames.map((f) => (
+        <tr class={f.type}>
+          <td>{String(f.index + 1).padStart(2, '0')}</td>
+          <td>{f.type === 'I' ? 'I · key' : f.type}</td>
+          <td>
+            <span class="bar" style={`width:${f.bits * 0.6}%`} aria-hidden="true" />
+            <span class="sr-only">{f.bits}</span>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p>Bar length is bits stored. Sizes are illustrative.</p>
+</aside>
+
+<style>
+  .sheet {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+  h2 {
+    font-size: var(--text-base);
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1.5px solid var(--color-ink);
+  }
+  th {
+    text-align: left;
+    font-weight: 500;
+    color: var(--color-ink-faint);
+    padding: 0.4rem 0.3rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+  td {
+    padding: 0.45rem 0.3rem;
+    border-bottom: 1px solid var(--color-line);
+    font-variant-numeric: tabular-nums;
+  }
+  td:last-child {
+    width: 50%;
+  }
+  .bar {
+    display: block;
+    height: 0.6rem;
+    min-width: 3px;
+    background: var(--color-ink);
+  }
+  tr.I td {
+    color: var(--color-key-ink);
+    font-weight: 700;
+  }
+  tr.I .bar {
+    background: var(--color-key);
+  }
+  tr.B .bar {
+    background: var(--color-graphite);
+  }
+  p {
+    margin-top: 0.75rem;
+    color: var(--color-ink-faint);
+  }
+</style>

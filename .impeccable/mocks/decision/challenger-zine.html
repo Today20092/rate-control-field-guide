@@ -1,0 +1,19 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Atkinson+Hyperlegible:wght@400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+body{width:1440px;height:900px;overflow:hidden;background:#fbf6e9;color:#151515;font-family:'Atkinson Hyperlegible',sans-serif}
+header{padding:56px 96px 0}
+h1{font:76px/1 'Permanent Marker';max-width:900px;transform:rotate(-1.5deg)}
+mark{background:linear-gradient(transparent 55%,#ffe14d 55%)}
+p{font-size:20px;line-height:1.6;max-width:640px;margin-top:28px}
+.panels{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;padding:48px 96px}
+.panel{border:3px solid #151515;border-radius:6px 14px 8px 12px;height:300px;padding:20px;font:22px 'Permanent Marker';position:relative;background:#fff}
+.panel:nth-child(2){background:#ffeaf4}.panel:nth-child(3){background:#e2f7f6}
+.mascot{position:absolute;bottom:20px;right:20px;width:90px;height:90px;border:3px solid #151515;border-radius:50%;background:#ffe14d}
+</style></head><body>
+<header><h1>Your video is mostly <mark>arrows</mark>, not pictures!</h1>
+<p>Instead of saving every frame, the encoder saves one picture and then writes down where things moved.</p></header>
+<div class="panels"><div class="panel">1. Draw one full frame<div class="mascot"></div></div><div class="panel">2. Note what moved →</div><div class="panel">3. Fix the leftovers</div></div>
+</body></html>

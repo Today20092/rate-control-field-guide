@@ -1,0 +1,211 @@
+@import 'tailwindcss';
+
+/* The only file allowed to hold raw colours (enforced by scripts/check-tokens.mjs). */
+@theme {
+  --color-paper: #f4f6f4;
+  --color-sheet: #ffffff;
+  --color-peg: #e9e2c8;
+  --color-peg-shade: #cfc6a4;
+  --color-line: #cfd6d2;
+  --color-ink: #1d2326;
+  --color-ink-soft: #4a5357;
+  --color-ink-faint: #596266;
+  /* Red key pencil: keys, I-frames, "you are here". -ink variant passes 4.5:1 on paper for small text. */
+  --color-key: #d8432b;
+  --color-key-ink: #a8301b;
+  /* Non-photo blue: motion, prediction, labels. -line passes 3:1 for strokes; -ink passes 4.5:1 for text. */
+  --color-motion: #3d7fc0;
+  --color-motion-ink: #2a6aa8;
+  --color-motion-wash: #dcebf8;
+  --color-graphite: #8b9397;
+
+  /* Names the cnippet/shadcn components in src/components/ui expect, mapped onto the palette above. */
+  --color-background: var(--color-sheet);
+  --color-foreground: var(--color-ink);
+  --color-primary: var(--color-ink);
+  --color-primary-foreground: var(--color-paper);
+  --color-muted: var(--color-peg);
+  --color-muted-foreground: var(--color-ink-soft);
+  --color-accent: var(--color-peg);
+  --color-input: var(--color-line);
+  --color-ring: var(--color-motion);
+
+  --font-display: 'Bricolage Grotesque Variable', 'Segoe UI', sans-serif;
+  --font-serif: 'Literata Variable', Georgia, serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  body {
+    background: var(--color-paper);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--color-motion-wash);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-motion);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  a {
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+  a:hover {
+    text-decoration-thickness: 2px;
+  }
+  code,
+  kbd {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+  }
+  html {
+    scrollbar-color: var(--color-graphite) var(--color-paper);
+  }
+  input[type='range'] {
+    accent-color: var(--color-key);
+  }
+}
+
+@layer components {
+  /* Reading prose inside chapters. */
+  .prose-sheet > * + * {
+    margin-top: 1.1em;
+  }
+  .prose-sheet a {
+    color: var(--color-motion-ink);
+    text-decoration-line: underline;
+  }
+  .prose-sheet strong {
+    font-weight: 650;
+  }
+
+  /* Mono labels: frame numbers, measurements, axis text. */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* Shared control look for every widget. */
+  .ctl {
+    display: inline-flex;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1.5px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-sheet);
+    padding: 0 1rem;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-ink);
+    cursor: pointer;
+    transition:
+      background 160ms var(--ease-out-expo),
+      color 160ms var(--ease-out-expo);
+  }
+  .ctl:hover {
+    background: var(--color-peg);
+  }
+  .ctl[aria-pressed='true'],
+  .ctl[aria-selected='true'] {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .ctl:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
+  .range {
+    width: 100%;
+    min-height: 2.75rem;
+    cursor: pointer;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .ctl[aria-pressed='true'],
+  .ctl[aria-selected='true'] {
+    outline: 3px solid CanvasText;
+  }
+}
+
+/* Curves draw in from the left when a rate-control tab opens. */
+@keyframes wipe {
+  from {
+    transform: scaleX(0);
+  }
+}
+.wipe {
+  transform-box: fill-box;
+  transform-origin: left;
+  animation: wipe 1.1s var(--ease-out-expo);
+}
+
+/* I/P/B letter tags: the letter plus a border style, never colour alone. */
+.frame-tag {
+  display: inline-grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  flex: none;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  background: var(--color-sheet);
+  color: var(--color-ink);
+}
+.frame-tag-I {
+  border: 3px solid var(--color-key);
+  color: var(--color-key-ink);
+}
+.frame-tag-P {
+  border: 2px solid var(--color-ink);
+}
+.frame-tag-B {
+  border: 2px dashed var(--color-graphite);
+}

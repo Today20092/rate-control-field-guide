@@ -1,0 +1,49 @@
+---
+/** The one idea to remember from a chapter, circled like a key drawing. */
+---
+
+<aside class="key" aria-label="Key idea">
+  <svg viewBox="0 0 40 40" aria-hidden="true">
+    <circle cx="20" cy="20" r="16"></circle>
+    <text x="20" y="25">
+      K
+    </text>
+  </svg>
+  <div>
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .key {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    max-width: 40rem;
+    margin: 2rem 0;
+    padding: 1.1rem 0;
+    border-top: 1px solid var(--color-graphite);
+    border-bottom: 1px solid var(--color-graphite);
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  svg {
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  circle {
+    fill: none;
+    stroke: var(--color-key);
+    stroke-width: 3;
+  }
+  text {
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    font-weight: 700;
+    text-anchor: middle;
+    fill: var(--color-key-ink);
+  }
+</style>
