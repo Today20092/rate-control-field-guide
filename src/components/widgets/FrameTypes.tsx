@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
-import { RotateCcw } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ChevronLeft, ChevronRight, Play, Square } from 'lucide-react'
 import { FRAME_BITS, type FrameType } from '../../lib/gop'
 import { Tabs, TabsList, TabsPanel, TabsTab } from '@/components/ui/tabs'
 
 /**
  * How each frame type is built, as a short animation. Three frames sit in a row; the middle one is
  * being built. An I-frame paints every block; a P-frame copies frame 1 and moves the ball along one
- * arrow; a B-frame borrows from frames 1 and 3. Each tab remounts its stage, so switching replays it.
+ * arrow; a B-frame borrows from frames 1 and 3. Each tab shows its own sequence.
  */
 
 const SLOT = [10, 215, 420] // left edge of frames 1, 2, 3
@@ -24,8 +24,8 @@ const types: Record<
 > = {
   I: {
     name: 'I-frame',
-    stores: 'The whole picture, compressed like a JPEG.',
-    needs: 'Nothing. A player can start here.',
+    stores: 'A complete picture.',
+    needs: 'No other frame.',
     refs: [],
     steps: ['The I-frame starts empty.', 'It stores every block of the picture. It needs no other frame.'],
   },
@@ -48,9 +48,9 @@ const types: Record<
     refs: [0, 2],
     steps: [
       'The B-frame starts empty.',
-      'Look at frame 1 and frame 3. The encoder sent frame 3 first, out of order.',
+      'The player decodes frame 3 before frame 2 so both references are ready.',
       'Store two arrows. The ball is halfway between its two positions.',
-      'Store a tiny fix. Two guesses together are closer, so the fix is smaller.',
+      'Store a small correction for the difference between the prediction and frame 2.',
     ],
   },
 }
@@ -128,36 +128,32 @@ function Arrow({ from, to, show, delay = 0 }: { from: number; to: number; show: 
 function Stage({ type }: { type: FrameType }) {
   const info = types[type]
   const last = info.steps.length - 1
-  // Server HTML shows the finished frame; the client rewinds and plays once the stage is on screen.
   const [step, setStep] = useState(last)
-  const [run, setRun] = useState<number | null>(0)
-  const ref = useRef<HTMLDivElement>(null)
+  const [playing, setPlaying] = useState(false)
 
   useEffect(() => {
-    const el = ref.current
-    if (!el || run === null || (run === 0 && matchMedia('(prefers-reduced-motion: reduce)').matches)) return
-    let timer: number | undefined
-    const io = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return
-      io.disconnect()
-      setStep(0)
-      let s = 0
-      const tick = () => {
-        s += 1
-        setStep(s)
-        if (s < last) timer = window.setTimeout(tick, 1500)
+    if (!playing) return
+    let next = 1
+    let timer: number
+    const tick = () => {
+      setStep(next)
+      if (next === last) setPlaying(false)
+      else {
+        next += 1
+        timer = window.setTimeout(tick, 2200)
       }
-      timer = window.setTimeout(tick, 600)
-    })
-    io.observe(el)
-    return () => {
-      io.disconnect()
-      window.clearTimeout(timer)
     }
-  }, [last, run])
+    timer = window.setTimeout(tick, 1200)
+    return () => window.clearTimeout(timer)
+  }, [last, playing])
+
+  function togglePlayback() {
+    if (!playing) setStep(0)
+    setPlaying(!playing)
+  }
 
   function moveStep(delta: number) {
-    setRun(null)
+    setPlaying(false)
     setStep((current) => Math.max(0, Math.min(last, current + delta)))
   }
 
@@ -170,7 +166,7 @@ function Stage({ type }: { type: FrameType }) {
   const fixed = type !== 'I' && step >= 3
 
   return (
-    <div ref={ref}>
+    <div>
       <div className="label grid grid-cols-3 gap-2 text-center text-ink-soft" aria-hidden="true">
         <span>Frame 1</span>
         <strong className="text-ink">Frame 2</strong>
@@ -271,16 +267,20 @@ function Stage({ type }: { type: FrameType }) {
           {info.steps[step]}
         </p>
         <div role="group" aria-label="Animation controls" className="flex flex-wrap gap-2">
-          <button type="button" className="ctl" onClick={() => setRun((r) => (r ?? 0) + 1)}>
-            <RotateCcw aria-hidden="true" size={16} />
-            Replay
+          <button type="button" className="ctl min-w-24" onClick={togglePlayback}>
+            {playing ? <Square aria-hidden="true" size={16} /> : <Play aria-hidden="true" size={16} />}
+            {playing ? 'Stop' : 'Play'}
           </button>
-          <button type="button" className="ctl" disabled={step === 0} onClick={() => moveStep(-1)}>
-            Previous step
-          </button>
-          <button type="button" className="ctl" disabled={step === last} onClick={() => moveStep(1)}>
-            Next step
-          </button>
+          <div role="group" aria-label="Animation steps" className="grid grid-cols-2 gap-2">
+            <button type="button" className="ctl px-2" disabled={step === 0} onClick={() => moveStep(-1)}>
+              <ChevronLeft aria-hidden="true" size={16} />
+              Previous
+            </button>
+            <button type="button" className="ctl px-2" disabled={step === last} onClick={() => moveStep(1)}>
+              Next
+              <ChevronRight aria-hidden="true" size={16} />
+            </button>
+          </div>
         </div>
       </div>
 

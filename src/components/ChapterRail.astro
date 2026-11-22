@@ -54,17 +54,24 @@ import { chapters } from '../content/chapters'
     if (label) label.textContent = chapter ? chapter.short : 'Start'
   }
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries.filter((e) => e.isIntersecting)
-      if (visible.length) setCurrent(visible[visible.length - 1].target.id)
-    },
-    { rootMargin: '-40% 0px -55% 0px' },
-  )
-  chapters.forEach((c) => {
-    const el = document.getElementById(c.id)
-    if (el) observer.observe(el)
+  const sections = chapters.flatMap(({ id }) => {
+    const section = document.getElementById(id)
+    return section ? [section] : []
   })
+  let current: string | null = null
+
+  function updateCurrent() {
+    const readingLine = window.innerHeight * 0.4
+    const section = sections.findLast((el) => el.getBoundingClientRect().top <= readingLine)
+    const next = section?.id ?? null
+    if (next === current) return
+    current = next
+    setCurrent(next)
+  }
+
+  window.addEventListener('scroll', updateCurrent, { passive: true })
+  window.addEventListener('resize', updateCurrent)
+  updateCurrent()
   links.forEach((a) => a.addEventListener('click', () => details?.removeAttribute('open')))
 </script>
 
