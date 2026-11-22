@@ -1,0 +1,421 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-22T16:27:55.123Z",
+  "title": "Design System: Video Compression, Frame by Frame",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Bond Paper",
+        "canonical": "approx. oklch(97.1% 0.004 155); hex in frontmatter is normative",
+        "tonalRamp": [
+          "oklch(15% 0.004 155)",
+          "oklch(26% 0.004 155)",
+          "oklch(37% 0.004 155)",
+          "oklch(48% 0.004 155)",
+          "oklch(60% 0.004 155)",
+          "oklch(72% 0.004 155)",
+          "oklch(84% 0.004 155)",
+          "oklch(95% 0.004 155)"
+        ]
+      },
+      "sheet": {
+        "role": "neutral",
+        "displayName": "Clean Sheet",
+        "canonical": "approx. oklch(100% 0 0); hex in frontmatter is normative",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(48% 0 0)",
+          "oklch(60% 0 0)",
+          "oklch(72% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "peg": {
+        "role": "neutral",
+        "displayName": "Peg Tan",
+        "canonical": "approx. oklch(90.8% 0.035 95); hex in frontmatter is normative",
+        "tonalRamp": [
+          "oklch(15% 0.035 95)",
+          "oklch(26% 0.035 95)",
+          "oklch(37% 0.035 95)",
+          "oklch(48% 0.035 95)",
+          "oklch(60% 0.035 95)",
+          "oklch(72% 0.035 95)",
+          "oklch(84% 0.035 95)",
+          "oklch(95% 0.035 95)"
+        ]
+      },
+      "peg-shade": {
+        "role": "neutral",
+        "displayName": "Peg Shade",
+        "canonical": "approx. oklch(81.5% 0.042 95); hex in frontmatter is normative",
+        "tonalRamp": [
+          "oklch(15% 0.042 95)",
+          "oklch(26% 0.042 95)",
+          "oklch(37% 0.042 95)",
+          "oklch(48% 0.042 95)",
+          "oklch(60% 0.042 95)",
+          "oklch(72% 0.042 95)",
+          "oklch(84% 0.042 95)",
+          "oklch(95% 0.042 95)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Ruling Line",
+        "canonical": "approx. oklch(86.3% 0.01 165); hex in frontmatter is normative",
+        "tonalRamp": [
+          "oklch(15% 0.01 165)",
+          "oklch(26% 0.01 165)",
+          "oklch(37% 0.01 165)",
+          "oklch(48% 0.01 165)",
+          "oklch(60% 0.01 165)",
+          "oklch(72% 0.01 165)",
+          "oklch(84% 0.01 165)",
+          "oklch(95% 0.01 165)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Graphite Ink",
+        "canonical": "approx. oklch(24.5% 0.011 230); hex in frontmatter is normative",
+        "tonalRamp": [
+          "oklch(15% 0.011 230)",
+          "oklch(26% 0.011 230)",
+          "oklch(37% 0.011 230)",
+          "oklch(48% 0.011 230)",
+          "oklch(60% 0.011 230)",
+          "oklch(72% 0.011 230)",
+          "oklch(84% 0.011 230)",
+          "oklch(95% 0.011 230)"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Graphite",
+        "canonical": "approx. oklch(43% 0.012 225); hex in frontmatter is normative",
+        "tonalRamp": [
+          "oklch(15% 0.012 225)",
+          "oklch(26% 0.012 225)",
+          "oklch(37% 0.012 225)",
+          "oklch(48% 0.012 225)",
+          "oklch(60% 0.012 225)",
+          "oklch(72% 0.012 225)",
+          "oklch(84% 0.012 225)",
+          "oklch(95% 0.012 225)"
+        ]
+      },
+      "ink-faint": {
+        "role": "neutral",
+        "displayName": "Faint Graphite",
+        "canonical": "approx. oklch(54.5% 0.011 225); hex in frontmatter is normative",
+        "tonalRamp": [
+          "oklch(15% 0.011 225)",
+          "oklch(26% 0.011 225)",
+          "oklch(37% 0.011 225)",
+          "oklch(48% 0.011 225)",
+          "oklch(60% 0.011 225)",
+          "oklch(72% 0.011 225)",
+          "oklch(84% 0.011 225)",
+          "oklch(95% 0.011 225)"
+        ]
+      },
+      "graphite": {
+        "role": "neutral",
+        "displayName": "Graphite Pencil",
+        "canonical": "approx. oklch(65% 0.01 225); hex in frontmatter is normative",
+        "tonalRamp": [
+          "oklch(15% 0.01 225)",
+          "oklch(26% 0.01 225)",
+          "oklch(37% 0.01 225)",
+          "oklch(48% 0.01 225)",
+          "oklch(60% 0.01 225)",
+          "oklch(72% 0.01 225)",
+          "oklch(84% 0.01 225)",
+          "oklch(95% 0.01 225)"
+        ]
+      },
+      "key": {
+        "role": "primary",
+        "displayName": "Red Key Pencil",
+        "canonical": "approx. oklch(60% 0.19 33); hex in frontmatter is normative",
+        "tonalRamp": [
+          "oklch(15% 0.19 33)",
+          "oklch(26% 0.19 33)",
+          "oklch(37% 0.19 33)",
+          "oklch(48% 0.19 33)",
+          "oklch(60% 0.19 33)",
+          "oklch(72% 0.19 33)",
+          "oklch(84% 0.19 33)",
+          "oklch(95% 0.19 33)"
+        ]
+      },
+      "key-ink": {
+        "role": "primary",
+        "displayName": "Key Pencil Ink",
+        "canonical": "approx. oklch(49% 0.16 33); hex in frontmatter is normative",
+        "tonalRamp": [
+          "oklch(15% 0.16 33)",
+          "oklch(26% 0.16 33)",
+          "oklch(37% 0.16 33)",
+          "oklch(48% 0.16 33)",
+          "oklch(60% 0.16 33)",
+          "oklch(72% 0.16 33)",
+          "oklch(84% 0.16 33)",
+          "oklch(95% 0.16 33)"
+        ]
+      },
+      "motion": {
+        "role": "secondary",
+        "displayName": "Non-Photo Blue",
+        "canonical": "approx. oklch(57% 0.12 252); hex in frontmatter is normative",
+        "tonalRamp": [
+          "oklch(15% 0.12 252)",
+          "oklch(26% 0.12 252)",
+          "oklch(37% 0.12 252)",
+          "oklch(48% 0.12 252)",
+          "oklch(60% 0.12 252)",
+          "oklch(72% 0.12 252)",
+          "oklch(84% 0.12 252)",
+          "oklch(95% 0.12 252)"
+        ]
+      },
+      "motion-ink": {
+        "role": "secondary",
+        "displayName": "Non-Photo Blue Ink",
+        "canonical": "approx. oklch(50% 0.12 252); hex in frontmatter is normative",
+        "tonalRamp": [
+          "oklch(15% 0.12 252)",
+          "oklch(26% 0.12 252)",
+          "oklch(37% 0.12 252)",
+          "oklch(48% 0.12 252)",
+          "oklch(60% 0.12 252)",
+          "oklch(72% 0.12 252)",
+          "oklch(84% 0.12 252)",
+          "oklch(95% 0.12 252)"
+        ]
+      },
+      "motion-wash": {
+        "role": "secondary",
+        "displayName": "Blue Wash",
+        "canonical": "approx. oklch(93% 0.025 245); hex in frontmatter is normative",
+        "tonalRamp": [
+          "oklch(15% 0.025 245)",
+          "oklch(26% 0.025 245)",
+          "oklch(37% 0.025 245)",
+          "oklch(48% 0.025 245)",
+          "oklch(60% 0.025 245)",
+          "oklch(72% 0.025 245)",
+          "oklch(84% 0.025 245)",
+          "oklch(95% 0.025 245)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero title only; key word upright in red."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Chapter titles under each peg strip."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Sub-headings inside prose and widget panels."
+      },
+      "takeaway": {
+        "displayName": "Takeaway",
+        "purpose": "Every figure's one-sentence point."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "Hero introduction in soft graphite."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Reading prose in a 40rem column."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase mono for frame numbers, measurements, axes, notes."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Button and tab text."
+      }
+    },
+    "shadows": [
+      {
+        "name": "peg-hole-punch",
+        "value": "inset 0 2px 0 var(--color-peg-shade)",
+        "purpose": "Inside edge of each peg hole."
+      },
+      {
+        "name": "floating-frame",
+        "value": "0 10px 24px -14px var(--color-ink)",
+        "purpose": "Frames in the 3D frame stack only."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "All state and reveal transitions."
+      },
+      {
+        "name": "control-state",
+        "value": "160ms",
+        "purpose": "Control background and colour changes."
+      },
+      {
+        "name": "rail-tick",
+        "value": "200ms",
+        "purpose": "Chapter tick length and thickness."
+      },
+      {
+        "name": "stack-fan",
+        "value": "900ms, 45ms stagger per frame",
+        "purpose": "Frame stack fan-open; hero plays once on view, never under reduced motion."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms",
+        "purpose": "All animation and transition durations under prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "pipeline-columns",
+        "value": "48rem"
+      },
+      {
+        "name": "hero-margin",
+        "value": "60rem"
+      },
+      {
+        "name": "rail",
+        "value": "70rem"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Control",
+      "kind": "button",
+      "refersTo": "control",
+      "description": "Every widget button and tab: inked pill, peg-tan hover, ink fill when pressed.",
+      "html": "<div style=\"display:flex;gap:.5rem\"><button class=\"ds-ctl\" aria-pressed=\"false\">What you see</button><button class=\"ds-ctl\" aria-pressed=\"true\">What’s stored</button><button class=\"ds-ctl\" disabled>Disabled</button></div>",
+      "css": ".ds-ctl{display:inline-flex;min-height:2.75rem;min-width:2.75rem;align-items:center;justify-content:center;gap:.5rem;border:1.5px solid var(--color-ink,#1d2326);border-radius:999px;background:var(--color-sheet,#fff);padding:0 1rem;white-space:nowrap;font-family:var(--font-mono,'JetBrains Mono Variable',ui-monospace,monospace);font-size:.8rem;font-weight:600;color:var(--color-ink,#1d2326);cursor:pointer;transition:background 160ms cubic-bezier(.16,1,.3,1),color 160ms cubic-bezier(.16,1,.3,1)}.ds-ctl:hover{background:var(--color-peg,#e9e2c8)}.ds-ctl[aria-pressed='true']{background:var(--color-ink,#1d2326);color:var(--color-paper,#f4f6f4)}.ds-ctl:focus-visible{outline:3px solid var(--color-motion,#3d7fc0);outline-offset:3px}.ds-ctl:disabled{cursor:not-allowed;opacity:.45}"
+    },
+    {
+      "name": "Frame-Type Tags",
+      "kind": "chip",
+      "refersTo": "frame-tag-i",
+      "description": "I, P and B told apart by letter and border style, never colour alone.",
+      "html": "<div style=\"display:flex;gap:1rem\"><b class=\"ds-tag ds-tag-i\">I</b><b class=\"ds-tag ds-tag-p\">P</b><b class=\"ds-tag ds-tag-b\">B</b></div>",
+      "css": ".ds-tag{display:grid;place-items:center;width:2.25rem;height:2.25rem;font-family:var(--font-mono,'JetBrains Mono Variable',monospace);font-weight:700;background:var(--color-sheet,#fff);color:var(--color-ink,#1d2326)}.ds-tag-i{border:3px solid var(--color-key,#d8432b);color:var(--color-key-ink,#a8301b)}.ds-tag-p{border:2px solid var(--color-ink,#1d2326)}.ds-tag-b{border:2px dashed var(--color-graphite,#8b9397)}"
+    },
+    {
+      "name": "Figure Sheet",
+      "kind": "card",
+      "refersTo": "figure-caption",
+      "description": "Ruled exposure-sheet frame for every diagram, with the one-sentence takeaway always visible.",
+      "html": "<figure class=\"ds-figure\"><div class=\"ds-stage\">[diagram]</div><figcaption><span class=\"ds-point\">Higher QP rounds harder: fewer bits, less detail.</span><span class=\"ds-note\">Real H.264 encodes of one frame.</span></figcaption></figure>",
+      "css": ".ds-figure{margin:0;border-top:1.5px solid var(--color-ink,#1d2326);border-bottom:1px solid var(--color-line,#cfd6d2)}.ds-stage{padding:1.5rem 0;color:var(--color-ink-faint,#6b7478)}.ds-figure figcaption{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;align-items:baseline;justify-content:space-between;padding:.9rem 0;border-top:1px dashed var(--color-line,#cfd6d2)}.ds-point{font-family:var(--font-display,'Bricolage Grotesque Variable',sans-serif);font-weight:700;font-size:1.05rem;line-height:1.35;color:var(--color-ink,#1d2326)}.ds-note{font-family:var(--font-mono,monospace);font-size:.75rem;letter-spacing:.04em;text-transform:uppercase;color:var(--color-ink-faint,#6b7478)}"
+    },
+    {
+      "name": "Key Idea",
+      "kind": "custom",
+      "description": "A chapter's one sentence to remember, circled like a key drawing.",
+      "html": "<aside class=\"ds-key\"><svg viewBox=\"0 0 40 40\" aria-hidden=\"true\"><circle cx=\"20\" cy=\"20\" r=\"16\"/><text x=\"20\" y=\"25\">K</text></svg><div>Bitrate is the budget. Rate control decides how it is spent.</div></aside>",
+      "css": ".ds-key{display:flex;gap:1rem;align-items:flex-start;max-width:40rem;padding:1.1rem 0;border-top:1px solid var(--color-graphite,#8b9397);border-bottom:1px solid var(--color-graphite,#8b9397);font-family:var(--font-display,'Bricolage Grotesque Variable',sans-serif);font-size:1.2rem;font-weight:600;line-height:1.4;color:var(--color-ink,#1d2326)}.ds-key svg{flex:none;width:2.25rem;height:2.25rem}.ds-key circle{fill:none;stroke:var(--color-key,#d8432b);stroke-width:3}.ds-key text{font-family:var(--font-mono,monospace);font-size:15px;font-weight:700;text-anchor:middle;fill:var(--color-key-ink,#a8301b)}"
+    },
+    {
+      "name": "Timing-Chart Rail",
+      "kind": "nav",
+      "description": "Chapter navigation as timing ticks; the current tick thickens and turns red.",
+      "html": "<nav class=\"ds-rail\"><a href=\"#a\"><span class=\"ds-tick\"></span><span>1</span><span>One picture</span></a><a href=\"#b\" aria-current=\"location\"><span class=\"ds-tick\"></span><span>2</span><span>Every frame</span></a><a href=\"#c\"><span class=\"ds-tick\"></span><span>3</span><span>Keys</span></a></nav>",
+      "css": ".ds-rail{padding:1rem 0 1rem 1.25rem;border-right:1px solid var(--color-line,#cfd6d2);width:13rem}.ds-rail a{display:grid;grid-template-columns:1.75rem 1.5rem 1fr;align-items:center;min-height:2.75rem;font-family:var(--font-mono,monospace);font-size:.75rem;color:var(--color-ink-soft,#4a5357);text-decoration:none}.ds-tick{height:1px;width:1.25rem;background:var(--color-ink,#1d2326);transition:height 200ms cubic-bezier(.16,1,.3,1),width 200ms cubic-bezier(.16,1,.3,1)}.ds-rail a:hover .ds-tick{width:1.6rem}.ds-rail a:focus-visible{outline:3px solid var(--color-motion,#3d7fc0);outline-offset:3px}.ds-rail a[aria-current]{color:var(--color-key-ink,#a8301b);font-weight:700}.ds-rail a[aria-current] .ds-tick{height:3px;width:1.6rem;background:var(--color-key,#d8432b)}"
+    },
+    {
+      "name": "Peg Strip",
+      "kind": "custom",
+      "refersTo": "peg-strip-chapter",
+      "description": "The punched registration strip heading the page and each chapter.",
+      "html": "<div class=\"ds-pegs\" aria-hidden=\"true\"><i></i><i class=\"ds-slot\"></i><i></i></div>",
+      "css": ".ds-pegs{display:flex;align-items:center;justify-content:center;gap:4rem;height:2.25rem;border-radius:.5rem .5rem 0 0;background:var(--color-peg,#e9e2c8)}.ds-pegs i{display:block;width:1rem;height:1rem;border-radius:999px;background:var(--color-paper,#f4f6f4);box-shadow:inset 0 2px 0 var(--color-peg-shade,#cfc6a4)}.ds-pegs i.ds-slot{width:3rem}"
+    },
+    {
+      "name": "Exposure Sheet",
+      "kind": "custom",
+      "description": "Mono frame table where each bar's length is the frame's stored size.",
+      "html": "<table class=\"ds-xsheet\"><thead><tr><th>Frame</th><th>Type</th><th>Size</th></tr></thead><tbody><tr class=\"I\"><td>01</td><td>I · key</td><td><span class=\"bar\" style=\"width:60%\"></span></td></tr><tr class=\"B\"><td>02</td><td>B</td><td><span class=\"bar\" style=\"width:9%\"></span></td></tr><tr class=\"P\"><td>03</td><td>P</td><td><span class=\"bar\" style=\"width:18%\"></span></td></tr></tbody></table>",
+      "css": ".ds-xsheet{width:15rem;border-collapse:collapse;border-top:1.5px solid var(--color-ink,#1d2326);font-family:var(--font-mono,monospace);font-size:.75rem;color:var(--color-ink,#1d2326)}.ds-xsheet th{text-align:left;font-weight:500;color:var(--color-ink-faint,#6b7478);padding:.4rem .3rem;border-bottom:1px solid var(--color-line,#cfd6d2)}.ds-xsheet td{padding:.45rem .3rem;border-bottom:1px solid var(--color-line,#cfd6d2);font-variant-numeric:tabular-nums}.ds-xsheet td:last-child{width:50%}.ds-xsheet .bar{display:block;height:.6rem;min-width:3px;background:var(--color-ink,#1d2326)}.ds-xsheet tr.I td{color:var(--color-key-ink,#a8301b);font-weight:700}.ds-xsheet tr.I .bar{background:var(--color-key,#d8432b)}.ds-xsheet tr.B .bar{background:var(--color-graphite,#8b9397)}"
+    },
+    {
+      "name": "Command Slab",
+      "kind": "custom",
+      "refersTo": "command-slab",
+      "description": "FFmpeg command on an ink slab with an inverse copy control.",
+      "html": "<div class=\"ds-cmd\"><code>ffmpeg -i in.mp4 -c:v libx264 -crf 23 out.mp4</code><button class=\"ds-cmd-btn\">Copy</button></div>",
+      "css": ".ds-cmd{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;border-radius:.375rem;background:var(--color-ink,#1d2326);color:var(--color-paper,#f4f6f4);padding:.75rem}.ds-cmd code{flex:1;min-width:0;overflow-x:auto;white-space:pre;font-family:var(--font-mono,monospace);font-size:.8rem;padding:.5rem .25rem}.ds-cmd-btn{min-height:2.75rem;border:1.5px solid var(--color-paper,#f4f6f4);border-radius:999px;background:var(--color-ink,#1d2326);color:var(--color-paper,#f4f6f4);padding:0 1rem;font-family:var(--font-mono,monospace);font-size:.8rem;font-weight:600;cursor:pointer}.ds-cmd-btn:hover{background:var(--color-ink-soft,#4a5357)}.ds-cmd-btn:focus-visible{outline:3px solid var(--color-motion,#3d7fc0);outline-offset:3px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Animator's Exposure Sheet",
+    "overview": "The guide is set as a working animation sheet, because animators named the idea first: key drawings, breakdowns and in-betweens are I, P and B frames. Cool bond paper carries graphite ink, a punched peg strip heads the page and every chapter, a timing-chart rail of ticks tracks the reader's place, and figures sit on the paper as ruled exposure-sheet frames rather than as cards. Two pencils do all the signalling: red for keys and \"you are here\", non-photo blue for motion and prediction.\n\nDensity is a calm reading column with diagrams breaking out to full measure. Diagrams are flat planes lit from one side; the only depth in the system is the 3D frame stack, where frames float apart to show that only the keys are whole pictures. Measurements are literal: a bar's length equals the bits it stands for.",
+    "keyCharacteristics": [
+      "Cool paper ground, graphite ink, no tinted surfaces beyond the peg tan.",
+      "Two reserved pencil colours with fixed meanings, never decoration.",
+      "Ruled sheets (heavy rule above, hairline below) instead of boxed cards.",
+      "Mono numerals for frame numbers, measurements and axis text.",
+      "Lengths that encode quantity exactly."
+    ],
+    "rules": [
+      {
+        "name": "The Two Pencils Rule",
+        "body": "Red marks only I-frames, keys and the current position. Blue marks only motion vectors, prediction and diagram labels. Neither colour is ever used for emphasis, branding or decoration. The build's only other blue uses are functional: prose and footer links (`motion-ink`) and the focus ring (`motion`).",
+        "section": "colors"
+      },
+      {
+        "name": "The Not By Colour Alone Rule",
+        "body": "I, P and B are always distinguished by letter and border style as well as colour: I has a 3–4px solid red border, P a 2px solid ink border, B a 2px dashed graphite border.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Colour File Rule",
+        "body": "Raw colour values live only in `src/styles/global.css`; everywhere else uses a token or its Tailwind class (`scripts/check-tokens.mjs` enforces this).",
+        "section": "colors"
+      },
+      {
+        "name": "The Mono Means Measured Rule",
+        "body": "Mono is reserved for things that are counted or measured: frame numbers, sizes, settings, axes, commands. Prose and headings never use it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Only The Stack Floats Rule",
+        "body": "The 3D frame stack is the one place anything casts a shadow. Every other surface stays on the paper.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** set every figure as a ruled sheet with a visible one-sentence takeaway, and label simplified models and illustrative numbers in the note.",
+      "**Do** make bar lengths and sizes proportional to the quantity they show.",
+      "**Do** use the `.ctl` and `.range` classes for every control, keeping the 44px minimum.",
+      "**Do** use `key-ink` and `motion-ink` for small red or blue text, and `key` and `motion` for strokes, fills and large type.",
+      "**Do** drive motion with the expo-out ease (`cubic-bezier(0.16, 1, 0.3, 1)`) and let `prefers-reduced-motion` collapse it."
+    ],
+    "donts": [
+      "**Don't** use red or blue for anything outside their roles (keys and current position; motion, prediction and labels).",
+      "**Don't** tell I, P and B apart by colour alone.",
+      "**Don't** put content in boxed, filled, shadowed cards; figures are open ruled sheets on the paper.",
+      "**Don't** add gradients or glow to diagrams, or shadows outside the 3D frame stack.",
+      "**Don't** write raw colour values outside `src/styles/global.css`."
+    ]
+  }
+}

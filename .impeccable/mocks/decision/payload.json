@@ -1,0 +1,101 @@
+{
+  "title": "Choose the visual world",
+  "question": "The roll assigned The Animator's Exposure Sheet. Keep it, take an alternate, or re-roll.",
+  "options": [
+    {
+      "id": "assigned", "kind": "assigned", "label": "The Animator's Exposure Sheet", "kicker": "THE ROLL",
+      "lineage": "hand-drawn animation: peg-registered paper, timing charts, exposure sheets, flip books",
+      "thesis": "Animators named the idea first: keys, breakdowns and in-betweens are I, P and B frames.",
+      "palette": ["#f4f6f4", "#1d2326", "#6fa8dc", "#d8432b", "#e9e2c8"],
+      "materials": ["animation bond paper with peg holes", "non-photo blue pencil", "red key pencil", "graphite line"],
+      "viewport": "A peg strip heads the page; the title sits on a sheet with a timing-chart ladder in the margin; a 3D stack of frames below fans apart, keys circled in red, motion arrows in blue.",
+      "risk": "Can read as a craft costume if paper texture leaks into the reading column.",
+      "raised": [
+        {"from": "challenger-precisionist", "raise": "Diagrams are flat unmodulated planes lit from one side: no gradients, no glow."},
+        {"from": "challenger-labanotation", "raise": "Length is exact: every bar a frame's size draws is proportional to its bits."},
+        {"from": "challenger-coptic", "raise": "Structure shows: the timing-chart rail always shows how many chapters remain."},
+        {"from": "challenger-tensegrity", "raise": "The rate-control buffer has four distinct states (empty, steady, strained, overflow), never told apart by colour alone."}
+      ],
+      "html": ".impeccable/mocks/decision/assigned.html"
+    },
+    {
+      "id": "model-pick", "kind": "pick", "label": "Broadcast Engineering Manual", "kicker": "IMPECCABLE’S PICK",
+      "lineage": "TV test cards and broadcast engineering handbooks",
+      "thesis": "The guide as the manual that ships with the transmitter, framed by colour bars.",
+      "palette": ["#101113", "#ececea", "#c9c34a", "#3fb4c4", "#c2449a"],
+      "materials": ["SMPTE colour bars", "engineering grid paper", "waveform traces"],
+      "viewport": "Colour-bar masthead, chapter numbers set like channel idents, a waveform rule under each heading.",
+      "risk": "The familiar 'video tech' look most runs land on, and it can intimidate beginners.",
+      "html": ".impeccable/mocks/decision/model-pick.html"
+    },
+    {
+      "id": "challenger-zine", "kind": "challenger", "catalogId": "hand-drawn-zine-explainer", "label": "Hand-drawn Zine Explainer", "verdict": "competitive",
+      "lineage": "technical zines and napkin sketches",
+      "thesis": "A friend sketches how video compression works on a napkin, panel by panel.",
+      "palette": ["#fbf6e9", "#151515", "#ffe14d", "#ff7eb6", "#3cc6c0"],
+      "materials": ["marker ink", "highlighter swipes", "doodle arrows"],
+      "viewport": "Marker headline, a mascot pointing at a doodled frame stack, highlighter on the one key line.",
+      "case": "Holds audience identification for beginners; loses on clarity because doodles blur exact frame sizes.",
+      "risk": "Cream paper plus marker is a common explainer look and can feel childish.",
+      "html": ".impeccable/mocks/decision/challenger-zine.html",
+      "hero": "https://impeccable.style/worlds/cards/hand-drawn-zine-explainer-hero.webp"
+    },
+    {
+      "id": "challenger-bench", "kind": "challenger", "catalogId": "operate-a-cutting-bench-select-rail", "label": "Cutting Bench Select Rail", "verdict": "competitive",
+      "lineage": "film editing benches and work prints",
+      "thesis": "Chapters strung along a perforated film rail; frames you skip still hang on pins below.",
+      "palette": ["#0b0b0b", "#ff6a1a", "#f2efe8"],
+      "materials": ["film grain", "grease-pencil crosses", "tape flags"],
+      "viewport": "A perforated rail crosses the page; each chapter is a punched frame window on a flag-orange field.",
+      "case": "Holds product clarity (frames are literal); loses audience identification and makes readers learn a rail.",
+      "risk": "Orange on black dominates and fights long reading.",
+      "html": ".impeccable/mocks/decision/challenger-bench.html",
+      "hero": "https://impeccable.style/worlds/cards/operate-a-cutting-bench-select-rail-hero.webp"
+    },
+    {
+      "id": "challenger-precisionist", "kind": "challenger", "catalogId": "design-canon-precisionist-industrial-plate", "label": "Precisionist Industrial Plate", "verdict": "declined",
+      "lineage": "Precisionist painting", "thesis": "Concepts as flat planes under one raking light.",
+      "palette": ["#efece4", "#4a5560", "#a4502f"], "materials": ["flat planes", "hard shadow"],
+      "viewport": "One stencilled numeral and overlapping planes.", "risk": "No link to video for beginners.",
+      "case": "Loses both axes: beginners do not recognise it and it says nothing about frames.",
+      "kept": "Flat unmodulated diagram planes with one light direction."
+    },
+    {
+      "id": "challenger-labanotation", "kind": "challenger", "catalogId": "notation-diagram-systems-labanotation", "label": "Labanotation Score", "verdict": "declined",
+      "lineage": "dance notation", "thesis": "Time read upward, length equals duration.",
+      "palette": ["#ffffff", "#111111", "#d9d9d9"], "materials": ["score paper", "hatched blocks"],
+      "viewport": "A centre staff rules the page.", "risk": "A notation nobody in the audience reads.",
+      "case": "Loses both axes: a new language to learn on top of compression.",
+      "kept": "Length is exact: bar length encodes the real quantity."
+    },
+    {
+      "id": "challenger-coptic", "kind": "challenger", "catalogId": "craft-making-coptic-exposed-binding", "label": "Coptic Exposed Binding", "verdict": "declined",
+      "lineage": "bookbinding", "thesis": "The structure is the ornament.",
+      "palette": ["#e9e1cf", "#6b4f33", "#2b2b2b"], "materials": ["linen thread", "wooden boards"],
+      "viewport": "A stitched spine down the page edge.", "risk": "Bookish costume unrelated to video.",
+      "case": "Loses both axes: unrelated to video for this audience.",
+      "kept": "Visible structure: progress shows how many sections remain."
+    },
+    {
+      "id": "challenger-tensegrity", "kind": "challenger", "catalogId": "kinetic-sculpture-automata-tensegrity-breathing-column", "label": "Tensegrity Column", "verdict": "declined",
+      "lineage": "kinetic sculpture", "thesis": "Opposing forces held in balance.",
+      "palette": ["#d9d6cf", "#141414", "#c8312b"], "materials": ["carbon rods", "red cord"],
+      "viewport": "A force network with leader-line labels.", "risk": "Engineering-heavy for beginners.",
+      "case": "Loses both axes, though bitrate versus quality is a real tension.",
+      "kept": "Distinct slack, balanced, stressed and failed states."
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code"},
+  "canon": true,
+  "canonCard": {
+    "kind": "canon", "label": "The category standard",
+    "thesis": "A clean interactive-explainer page, executed impeccably.",
+    "palette": ["#ffffff", "#0f172a", "#2563eb"],
+    "materials": ["clean grid", "rounded cards", "system sans"],
+    "viewport": "Centred title, sticky table of contents, diagrams in white cards.",
+    "risk": "Indistinguishable from every other explainer by design.",
+    "html": ".impeccable/mocks/decision/canon.html"
+  },
+  "steer": true
+}

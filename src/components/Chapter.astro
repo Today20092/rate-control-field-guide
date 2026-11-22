@@ -1,0 +1,38 @@
+---
+/** One chapter: a punched sheet with its number and title, then prose and figures in the slot. */
+import PegStrip from './PegStrip.astro'
+import { chapters, type ChapterId } from '../content/chapters'
+
+interface Props {
+  id: ChapterId
+}
+const { id } = Astro.props
+const chapter = chapters.find((c) => c.id === id)!
+---
+
+<section id={id} aria-labelledby={`${id}-title`} class="chapter">
+  <PegStrip />
+  <header>
+    <h2 id={`${id}-title`}>{chapter.title}</h2>
+  </header>
+  <div class="body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .chapter {
+    margin-top: clamp(4rem, 10vw, 7rem);
+  }
+  header {
+    padding-top: 1.75rem;
+    max-width: 44rem;
+  }
+  h2 {
+    font-size: clamp(2rem, 5.5vw, 3.5rem);
+    font-weight: 800;
+  }
+  .body {
+    margin-top: 1.5rem;
+  }
+</style>

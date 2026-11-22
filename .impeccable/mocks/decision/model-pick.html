@@ -1,0 +1,21 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;800&family=Martian+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+body{width:1440px;height:900px;overflow:hidden;background:#101113;color:#ececea;font-family:Archivo,sans-serif}
+.bars{display:flex;height:72px}.bars i{flex:1}
+nav{display:flex;gap:36px;padding:20px 72px;font:500 12px 'Martian Mono';border-bottom:1px solid #2a2c30}
+nav b{color:#c9c34a}
+main{display:grid;grid-template-columns:1fr 520px;gap:64px;padding:72px}
+.ch{font:500 14px 'Martian Mono';color:#3fb4c4}
+h1{font:800 96px/0.95 Archivo;letter-spacing:-.03em;margin:20px 0}
+p{font-size:19px;line-height:1.6;color:#b9bab6;max-width:620px}
+.scope{border:1px solid #2a2c30;height:420px;background:repeating-linear-gradient(0deg,#1a1c1f 0 1px,transparent 1px 42px),repeating-linear-gradient(90deg,#1a1c1f 0 1px,transparent 1px 52px);position:relative}
+.scope i{position:absolute;bottom:40px;width:30px;background:#c9c34a}
+</style></head><body>
+<div class="bars"><i style="background:#c0c0c0"></i><i style="background:#c9c34a"></i><i style="background:#3fb4c4"></i><i style="background:#3fa64a"></i><i style="background:#c2449a"></i><i style="background:#c43b3b"></i><i style="background:#2f3fb0"></i></div>
+<nav><b>CH 01 IMAGE</b><span>CH 02 INTRA</span><span>CH 03 I·P·B</span><span>CH 04 CODECS</span><span>CH 05 BITRATE</span><span>CH 06 TRADE-OFFS</span><span>CH 07 RATE</span></nav>
+<main><div><p class="ch">CH 03 — INTER-FRAME CODING</p><h1>Most frames are just directions.</h1><p>H.264 and H.265 send a full picture now and then. Every frame in between is a list of motion vectors and a small correction.</p></div>
+<div class="scope"><i style="left:40px;height:300px"></i><i style="left:90px;height:40px;background:#3fb4c4"></i><i style="left:140px;height:90px;background:#c2449a"></i><i style="left:190px;height:36px;background:#3fb4c4"></i><i style="left:240px;height:110px;background:#c2449a"></i><i style="left:290px;height:290px"></i></div></main>
+</body></html>
